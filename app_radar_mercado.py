@@ -205,6 +205,13 @@ elif not municipio and not bairro and not porte_empresa and not categoria and si
 elif not municipio and not bairro and not porte_empresa and not categoria and not simples and mei: filtered_df = df7[df7['OPCAO PELO MEI'].isin(mei)]
 elif not municipio and not bairro and not porte_empresa and not categoria and not simples and not mei: filtered_df = df7.copy()
 
+
+if  filtered_df['CAPITAL SOCIAL'].min() != filtered_df['CAPITAL SOCIAL'].max():
+    range_capital = st.sidebar.slider("Selecione o range de capital social", filtered_df['CAPITAL SOCIAL'].min(), filtered_df['CAPITAL SOCIAL'].max(), (filtered_df['CAPITAL SOCIAL'].min(), filtered_df['CAPITAL SOCIAL'].max()))
+    filtered_df = filtered_df[filtered_df['CAPITAL SOCIAL'].between(range_capital[0], range_capital[1])]
+else: st.sidebar.write("Capital social (em R$) de cada empresa é:", filtered_df['CAPITAL SOCIAL'].min())
+
+
 filtered_df['CAPITAL SOCIAL'] = filtered_df['CAPITAL SOCIAL'].astype('float')
 capital_df=filtered_df[['CNPJ BASICO', 'CAPITAL SOCIAL']].drop_duplicates()
 #-----------------------------------------------------------------------------------------------
